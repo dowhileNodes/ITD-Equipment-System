@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>IT Equipment Form</title>
+</head>
+<body>
+
+<h2>IT Equipment Borrow / Return</h2>
+
+<form action="submit.php" method="POST">
+    Email: <input type="email" name="email" required><br><br>
+    Borrower Name: <input type="text" name="borrower_name" required><br><br>
+    Business Unit: 
+<select name="business_unit" required>
+    <option value="">-- Select Business Unit --</option>
+    <option value="Solutions">TOPLIS Solutions</option>
+    <option value="Logistics">TOPLIS Logistics</option>
+     <option value="Logistics">KABRASO</option>
+      <option value="Logistics">TOTC</option>
+       <option value="Logistics">Greatways Manpower International</option>
+    <option value="Shared Solutions">Shared Solutions</option>
+     <option value="Logistics">VelcoAsia</option>
+      <option value="Logistics">UPark</option>
+       <option value="Logistics">Logicore Express</option>
+        <option value="Logistics">Newtec Certified Inc</option>
+        <option value="Logistics">Shared services</option>
+</select>
+<br><br>
+
+    Item ID: <input type="text" name="item_id" required><br><br>
+
+    Action:
+    <select name="action">
+        <option value="borrow">Borrow</option>
+        <option value="return">Return</option>
+    </select><br><br>
+
+    Items:<br>
+    <input type="checkbox" name="items[]" value="Laptop"> Laptop<br>
+    <input type="checkbox" name="items[]" value="Mouse"> Mouse<br>
+    <input type="checkbox" name="items[]" value="Keyboard"> Keyboard<br><br>
+
+    Borrow Date: <input type="date" name="borrow_date"><br><br>
+    Return Date: <input type="date" name="return_date"><br><br>
+
+    <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>
