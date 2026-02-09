@@ -18,7 +18,8 @@
 
 <body>
 
-<h2>Equipment Issuance Form</h2>
+<h2>TSI GROUP</h2>
+<h2>GATE PASS</h2>
 
 <form method="POST" action="save_form.php"><!--save all data to save_form-->
 
