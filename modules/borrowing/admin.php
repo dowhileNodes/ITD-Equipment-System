@@ -1,11 +1,11 @@
 <?php
 // admin.php
-
-// database connection
+require_once __DIR__ . '/../../config/db.php';
+/* database connection
 $conn = new mysqli("localhost", "root", "", "it_equipment_db");
 if ($conn->connect_error) {
     die("Database connection failed");
-}
+}*/
 
 // fetching all records from form
 $sql = "SELECT * FROM it_equipment_logs ORDER BY created_at DESC";

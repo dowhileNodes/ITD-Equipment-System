@@ -4,16 +4,22 @@ use PHPMailer\PHPMailer\Exception;
 //use PHPMailer\PHPMailer\OAuthTokenProvider;
 //use Psr\Log\LoggerInterface;
 
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../PHPMailer/Exception.php';
+require_once __DIR__ . '/../../PHPMailer/PHPMailer.php';
+require_once __DIR__ . '/../../PHPMailer/SMTP.php';
 
+/*
 require 'PHPMailer/Exception.php';
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
 require __DIR__ . '/vendor/autoload.php'; // address the issue undefined type loogerinterface
+require_once 'db.php';*/
 
-
+/*
 //db connect
 $conn = new mysqli("localhost", "root", "", "it_equipment_db");
-if ($conn->connect_error) die("Database connection failed");
+if ($conn->connect_error) die("Database connection failed");*/
 
 //forms
 $email = $_POST['email'];
