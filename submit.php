@@ -1,10 +1,15 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+//use PHPMailer\PHPMailer\OAuthTokenProvider;
+//use Psr\Log\LoggerInterface;
+
 
 require 'PHPMailer/Exception.php';
 require 'PHPMailer/PHPMailer.php';
 require 'PHPMailer/SMTP.php';
+require __DIR__ . '/vendor/autoload.php'; // address the issue undefined type loogerinterface
+
 
 //db connect
 $conn = new mysqli("localhost", "root", "", "it_equipment_db");
@@ -60,8 +65,13 @@ try {
     $mail->SMTPAuth = true;
     $mail->Username = 'hopperjane.tsi123@gmail.com';
     $mail->Password = 'cvowqjfuhevodgeu';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+   // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;//new parameter; not working
+   // $mail->SMTPSecure = 'tls'; 
+    //$mail->Port = 587;//not working, but port is reachable
+    // trying direct ssl
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+    $mail->Port = 465;
+    
 
     $mail->setFrom('hopperjane.tsi123@gmail.com', 'IT Support');
     $mail->addAddress($email, $borrower_name);
@@ -78,8 +88,6 @@ $mail->Password   = 'YOUR_APP_PASSWORD';
 
 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 $mail->Port       = 587;*/
-
-$mail->SMTPDebug  = 2; // enable while testing
     $mail->Subject = 'IT Equipment Form Submission';
     $mail->Body = "
 Hello $borrower_name,
@@ -94,12 +102,11 @@ Return Date: $return_date
 
 Thank you.
 ";
-
+    $mail->SMTPDebug  = 2; // enable while testing
     $mail->send();
+    echo "Form submitted successfully!";
 
 } catch (Exception $e) {
     echo "Email could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
-
-echo "Form submitted successfully!";
 ?>
