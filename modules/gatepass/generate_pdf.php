@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../../config/db.php';
-//include 'db.php';
 
 use Dompdf\Dompdf;
 
@@ -18,3 +17,6 @@ $pdf->loadHtml($html);
 $pdf->setPaper('A4', 'portrait');
 $pdf->render();
 $pdf->stream("Equipment_Form_$id.pdf");
+$options = new Options();
+$options->set('isRemoteEnabled', true);
+$dompdf = new Dompdf($options);
