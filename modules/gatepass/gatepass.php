@@ -120,10 +120,10 @@
 
   <div style="width:48%;">
     <label>Recipient:</label><br>
-    <input type="text" name="recipient" required style="width:100%;"><br>
+    <input type="text" placeholder="NAME" name="recipient" required style="width:100%;"><br>
 
     <label>From:</label><br>
-    <input type="text" name="issued_from" required style="width:100%;"><br>
+    <input type="text" placeholder="NAME" name="issued_from" required style="width:100%;"><br>
   </div>
 
   <div style="width:48%;">
@@ -151,13 +151,8 @@
 </tr>
 
 <tr>
-  <td><input type="number" name="qty[]" required></td>
-  <td><textarea name="description_items[]" placeholder="Laptop, Serial No, etc..."></textarea></td>
-</tr>
-
-<tr>
-  <td><input type="number" name="qty[]"></td>
-  <td><textarea name="description_items[]"></textarea></td>
+  <td><input type="number" placeholder="0" name="qty[]" required></td>
+  <td><textarea name="description_items[]" required placeholder="Laptop, Serial No, etc..."></textarea></td>
 </tr>
 
 </table>
@@ -174,7 +169,7 @@ document.getElementById('addItemBtn').addEventListener('click', function() {
     const cell1 = newRow.insertCell(0);
     const cell2 = newRow.insertCell(1);
 
-    cell1.innerHTML = '<input type="number" name="qty[]">';
+    cell1.innerHTML = '<input type="number" placeholder="0" name="qty[]">';
     cell2.innerHTML = '<textarea name="description_items[]" placeholder="Item description..."></textarea>';
 });
 </script>
@@ -186,25 +181,25 @@ document.getElementById('addItemBtn').addEventListener('click', function() {
 <tr>
   <td style="width:25%;">
     <span>Prepared By:</span><br>
-    <input type="text" name="name_prepared">
+    <input type="text" placeholder="NAME" name="name_prepared" required>
     <input type="hidden" name="sig_prepared">
   </td>
 
   <td style="width:25%;">
     <span>Checked By:</span><br>
-    <input type="text" name="name_checked">
+    <input type="text" placeholder="NAME" name="name_checked" required>
     <input type="hidden" name="sig_checked">
   </td>
 
   <td style="width:25%;">
     <span>Approved By:</span><br>
-    <input type="text" name="name_approved">
+    <input type="text" placeholder="NAME" name="name_approved" required>
     <input type="hidden" name="sig_approved">
   </td>
 
   <td style="width:25%;">
     <span>Received By:</span><br>
-    <input type="text" name="name_received">
+    <input type="text" placeholder="NAME" name="name_received" required>
     <input type="hidden" name="sig_received">
   </td>
 </tr>

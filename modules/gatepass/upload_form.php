@@ -2,35 +2,44 @@
 require_once __DIR__ . '/../../config/db.php';
 
 $message = "";
+$showPopup = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    $showPopup = true;
+
     $form_id = intval($_POST['form_id']);
 
-    // Check if form exists
     $check = $conn->prepare("SELECT id FROM equipment_forms WHERE id = ?");
     $check->bind_param("i", $form_id);
     $check->execute();
     $result = $check->get_result();
 
     if ($result->num_rows == 0) {
-        $message = "Invalid Gatepass ID.";
-    } else {
+        $message = "Upload failed";
+    }
+    else {
 
         $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
-        $extension = strtolower(pathinfo($_FILES['signed_file']['name'], PATHINFO_EXTENSION));
+        $uploadedFileName = $_FILES['signed_file']['name'];
+        $extension = strtolower(pathinfo($uploadedFileName, PATHINFO_EXTENSION));
+
+        $expectedName = "Equipment_Form_" . $form_id . "." . $extension;
 
         if (!in_array($extension, $allowedExtensions)) {
-            $message = "Invalid file type.";
-        } else {
+            $message = "Upload failed";
+        }
+        elseif ($uploadedFileName !== $expectedName) {
+            $message = "Upload failed";
+        }
+        else {
 
             $uploadDir = "uploads/gatepass/";
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
 
-            $fileName = "gatepass_" . $form_id . "." . $extension;
-            $filePath = $uploadDir . $fileName;
+            $filePath = $uploadDir . $expectedName;
 
             if (move_uploaded_file($_FILES['signed_file']['tmp_name'], $filePath)) {
 
@@ -42,9 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bind_param("si", $filePath, $form_id);
                 $stmt->execute();
 
-                $message = "Signed gatepass uploaded successfully.";
-            } else {
-                $message = "Upload failed.";
+                $message = "success";
+            }
+            else {
+                $message = "Upload failed";
             }
         }
     }
@@ -54,26 +64,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload Signed Gatepass</title>
+<title>Upload Signed Gatepass</title>
+
+<style>
+body {
+    font-family: Georgia, serif;
+    background: url("viber_image_2026-02-24_11-08-29-685.jpg") no-repeat center center fixed;
+    background-size: cover;
+    padding: 40px;
+}
+
+.container {
+    width: 400px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 20px 25px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+h2 { text-align:center; }
+label { font-weight:bold; display:block; margin-top:10px; }
+
+input, button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+button {
+    background:black;
+    color:white;
+    border:none;
+    font-weight:bold;
+}
+
+button:hover { background:#333; }
+
+/* POPUP */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    font-size: 18px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    z-index: 9999;
+    opacity: 0;
+    animation: fadeInOut 4s forwards;
+    pointer-events: none; /* IMPORTANT */
+}
+
+.success { background: green; }
+.failed  { background: red; }
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+</style>
 </head>
+
 <body>
 
-<h2>Upload Signed Gatepass</h2>
+<div class="container">
+    <h2>Upload Signed Gatepass</h2>
 
-<form method="POST" enctype="multipart/form-data">
-    Gatepass ID:
-    <input type="number" name="form_id" required>
-    <br><br>
+    <form method="POST" enctype="multipart/form-data">
+        <label>Gatepass ID:</label>
+        <input type="number" name="form_id" required>
 
-    Select Signed File:
-    <input type="file" name="signed_file" accept=".pdf,.jpg,.jpeg,.png" required>
-    <br><br>
+        <label>Select Signed File:</label>
+        <input type="file" name="signed_file" accept=".pdf,.jpg,.jpeg,.png" required>
 
-    <button type="submit">Upload</button>
-</form>
+        <button type="submit">UPLOAD</button>
+    </form>
+</div>
 
-<br>
-<strong><?php echo $message; ?></strong>
+<?php if($showPopup && $message == "success") { ?>
+<div class="popup success">Signed gatepass uploaded successfully</div>
+
+<?php } elseif($showPopup) { ?>
+<div class="popup failed">Upload failed</div>
+<?php } ?>
 
 </body>
 </html>

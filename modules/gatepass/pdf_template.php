@@ -115,7 +115,7 @@ body {
 
 <table class="equipment-table">
 <tr>
-    <th style="width:15%;">QTY</th>
+    <th style="width:15%;">QUANTITY</th>
     <th>DESCRIPTION</th>
 </tr>
 
@@ -150,12 +150,13 @@ foreach ($roles_order as $role => $name):
 <td>
     <div style="height:40px;"></div>
 
-    <div style="font-weight:bold;">
+    <div style="font-weight:bold; text-transform: uppercase;">
         <?= $name ?>
     </div>
 
     <div class="signature-line"></div>
-    <div><?= ucfirst($role) ?></div>
+
+    <div><?= strtoupper($role) ?> BY:</div>
 </td>
 <?php endforeach; ?>
 </tr>
