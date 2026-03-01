@@ -2,11 +2,18 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+require_once __DIR__ . '/../../config/authentication.php';
+require_once __DIR__ . '/../../includes/navbar.php';
 require_once __DIR__ . '/../../config/db.php';
 require_once __DIR__ . '/../../PHPMailer/Exception.php';
 require_once __DIR__ . '/../../PHPMailer/PHPMailer.php';
 require_once __DIR__ . '/../../PHPMailer/SMTP.php';
-
+/*session checker
+session_start();
+if (!isset($_SESSION['employee_id'])) {
+    header("Location: login.php");
+    exit();
+}*/
 /* GET FORM DATA*/
 $email = $_POST['email'];
 $borrower_name = $_POST['borrower_name'];
@@ -108,10 +115,17 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    /* Add padding equal or slightly bigger than navbar height */
+    padding-top: 80px; /* Adjust to match your navbar height */
+}
+
+/* new added to fixed navbar */
+.page-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: calc(100vh - 80px);
 }
 
 /* Glass Container */
@@ -166,15 +180,16 @@ body {
 </head>
 
 <body>
+<div class='page-wrapper'>
+    <div class='success-box'>
+        <h2>✅ Request Submitted Successfully</h2>
+        <p>
+            Your IT Equipment request has been recorded successfully.<br>
+            A confirmation email has been sent to your account.
+        </p>
 
-<div class='success-box'>
-    <h2>✅ Request Submitted Successfully</h2>
-    <p>
-        Your IT Equipment request has been recorded successfully.<br>
-        A confirmation email has been sent to your account.
-    </p>
-
-    <button onclick=\"window.location.href='index.html'\">Back to Form</button>
+        <button onclick=\"window.location.href='index.php'\">Back to Form</button>
+    </div>
 </div>
 
 </body>

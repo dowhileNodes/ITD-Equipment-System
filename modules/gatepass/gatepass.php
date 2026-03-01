@@ -1,3 +1,14 @@
+<?php
+require_once __DIR__ . '/../../config/authentication.php';
+require_once __DIR__ . '/../../includes/navbar.php';
+/*session checker
+
+session_start();
+if (!isset($_SESSION['employee_id'])) {
+    header("Location: login.php");
+    exit();
+}*/
+?>
 <!DOCTYPE html>
 <html>
 <head>

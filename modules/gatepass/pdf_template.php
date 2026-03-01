@@ -1,166 +1,180 @@
 <?php
 ob_start();
-
-/* LOGO */
-$logo_path = 'C:/xampp/htdocs/ITD-Equipment-System/modules/gatepass/topsill.jpg';
-$logo_base64 = base64_encode(file_get_contents($logo_path));
+//session checker
+session_start();
+if (!isset($_SESSION['employee_id'])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 
 <style>
-body {
-    font-family: Georgia, serif;
-    font-size: 12px;
-    color: #000;
-    padding: 20px;
-}
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+    }
 
-/* HEADER */
-.header-table {
-    width: 100%;
-    margin-bottom: 10px;
-}
-.logo-cell { width: 20%; }
-.center-cell { width: 60%; text-align: center; }
-.company-name { font-size: 18px; font-weight: bold; }
-.gatepass-title { font-size: 16px; font-weight: bold; margin-top: 3px; }
+    .container {
+        width: 100%;
+        border: 2px solid #000;
+        padding: 15px;
+    }
 
-/* INFO */
-.info-table { width: 100%; margin-top: 10px; margin-bottom: 15px; }
-.info-table td { width: 50%; padding: 6px; }
-.label { font-weight: bold; }
-.value-box {
-    border: 1px solid #000;
-    padding: 6px;
-    min-height: 18px;
-}
+    .header {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 
-/* EQUIPMENT TABLE */
-.equipment-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-}
-.equipment-table th,
-.equipment-table td {
-    border: 1px solid #000;
-    padding: 6px;
-    text-align: left;
-}
+    .logo {
+        width: 100px;
+        float: left;
+    }
 
-/* SIGNATURES */
-.signature-table {
-    width: 100%;
-    table-layout: fixed;
-    margin-top: 20px;
-}
-.signature-table td {
-    width: 25%;
-    text-align: center;
-    vertical-align: bottom;
-    height: 120px;
-}
-.signature-line {
-    border-bottom: 1px solid #000;
-    width: 150px;
-    margin: 5px auto;
-}
+    .logo img {
+        width: 100px;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .title h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .title h3 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 2px;
+    }
+
+    .clear {
+        clear: both;
+    }
+
+    .row {
+        margin-bottom: 8px;
+    }
+
+    .field-label {
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    table, th, td {
+        border: 1px solid #000;
+    }
+
+    th, td {
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .sign-section {
+        margin-top: 25px;
+        width: 100%;
+    }
+
+    .sign-box {
+        width: 48%;
+        float: left;
+    }
+
+    .sign-field {
+        border: 1px solid #000;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 </style>
 
-<!-- HEADER -->
-<table class="header-table">
-<tr>
-    <td class="logo-cell">
-        <img src="data:image/jpg;base64,<?= $logo_base64 ?>" width="80">
-    </td>
+<div class="container">
 
-    <td class="center-cell">
-        <div class="company-name">Toplis Solutions Incorporation</div>
-        <div class="gatepass-title">GATE PASS</div>
-    </td>
+    <div class="header">
+        <div class="logo">
+            <img src="<?= __DIR__ ?>/../../TSI (png) 2022 500 pixel.png">
+        </div>
 
-    <td style="width:20%;"></td>
-</tr>
-</table>
+        <div class="title">
+            <h2>TSI GROUP</h2>
+            <h3>GATE PASS</h3>
+        </div>
 
-<hr>
-
-<!-- HEADER DETAILS -->
-<table class="info-table">
-<tr>
-    <td>
-        <div class="label">Recipient:</div>
-        <div class="value-box"><?= $form['recipient'] ?? '' ?></div>
-    </td>
-
-    <td>
-        <div class="label">Business Unit:</div>
-        <div class="value-box"><?= $form['business_unit'] ?? '' ?></div>
-    </td>
-</tr>
-
-<tr>
-    <td>
-        <div class="label">From:</div>
-        <div class="value-box"><?= $form['issued_from'] ?? '' ?></div>
-    </td>
-
-    <td>
-        <div class="label">Date:</div>
-        <div class="value-box"><?= $form['issue_date'] ?? '' ?></div>
-    </td>
-</tr>
-</table>
-
-<h4>Equipment Details</h4>
-
-<table class="equipment-table">
-<tr>
-    <th style="width:15%;">QUANTITY</th>
-    <th>DESCRIPTION</th>
-</tr>
-
-<?php if(!empty($items)): ?>
-<?php foreach ($items as $item): ?>
-<tr>
-    <td><?= $item['quantity'] ?? '' ?></td>
-    <td><?= $item['description'] ?? '' ?></td> 
-</tr>
-<?php endforeach; ?>
-<?php else: ?>
-<tr><td colspan="2">No Items</td></tr>
-<?php endif; ?>
-</table>
-
-<br>
-
-<h4>Signatures</h4>
-
-<table class="signature-table">
-<tr>
-<?php
-$roles_order = [
-    'prepared' => $form['name_prepared'] ?? '',
-    'checked'  => $form['name_checked'] ?? '',
-    'approved' => $form['name_approved'] ?? '',
-    'received' => $form['name_received'] ?? ''
-];
-
-foreach ($roles_order as $role => $name):
-?>
-<td>
-    <div style="height:40px;"></div>
-
-    <div style="font-weight:bold; text-transform: uppercase;">
-        <?= $name ?>
+        <div class="clear"></div>
     </div>
 
-    <div class="signature-line"></div>
+    <div class="row">
+        <span class="field-label">TO:</span>
+        <?= htmlspecialchars($form['recipient']) ?>
+    </div>
 
-    <div><?= strtoupper($role) ?> BY:</div>
-</td>
-<?php endforeach; ?>
-</tr>
-</table>
+    <div class="row">
+        <span class="field-label">FROM:</span>
+        <?= htmlspecialchars($form['issued_from']) ?>
+    </div>
+
+    <div class="row">
+        <span class="field-label">DATE:</span>
+        <?= htmlspecialchars($form['issue_date']) ?>
+    </div>
+
+    <div class="row">
+        <span class="field-label">Business Unit:</span>
+        <?= htmlspecialchars($form['business_unit']) ?>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="15%">QTY</th>
+                <th width="85%">DESCRIPTION</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($items as $item): ?>
+            <tr>
+                <td><?= htmlspecialchars($item['qty']) ?></td>
+                <td><?= htmlspecialchars($item['description_items[]']) ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+    <div class="sign-section">
+
+        <div class="sign-box">
+            <div class="sign-field">
+                PREPARED BY:<br>
+                <?= htmlspecialchars($form['name_prepared'] ?? '') ?>
+            </div>
+
+            <div class="sign-field">
+                CHECKED BY:<br>
+                <?= htmlspecialchars($form['name_checked'] ?? '') ?>
+            </div>
+        </div>
+
+        <div class="sign-box" style="float:right;">
+            <div class="sign-field">
+                APPROVED BY:<br>
+                <?= htmlspecialchars($form['name_approved'] ?? '') ?>
+            </div>
+
+            <div class="sign-field">
+                RECEIVED BY:<br>
+                <?= htmlspecialchars($form['name_received'] ?? '') ?>
+            </div>
+        </div>
+
+        <div style="clear:both;"></div>
+    </div>
+
+</div>
 
 <?php
 return ob_get_clean();

@@ -1,7 +1,14 @@
 <?php
-//backend handler for forms
+//backend handler for for signed gatepass
 //include 'db.php';
 require_once __DIR__ . '/../../config/db.php';
+
+//session checker
+session_start();
+if (!isset($_SESSION['employee_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
 $conn->begin_transaction();
 
