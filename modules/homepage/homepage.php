@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../config/app.php';
-require_once __DIR__ . '/../config/authentication.php';
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../includes/navbar.php';
+require_once __DIR__ . '/../../config/app.php';
+require_once __DIR__ . '/../../config/authentication.php';
+require_once __DIR__ . '/../../config/db.php';
+require_once __DIR__ . '/../../includes/navbar.php';
 
 /* GET EMPLOYEE NAME (fallback to employee_id) */
 $employee_name = $_SESSION['employee_id'];
@@ -215,14 +215,14 @@ h2 {
         <div class="card">
             <h3>Gate Pass</h3>
             <p>Create and manage equipment gate pass.</p>
-            <a href="gatepass/gatepass.php">Open</a>
+            <a href="<?php echo BASE_URL; ?>/modules/gatepass/gatepass.php">Open</a>
         </div>
 
         <!-- Borrow Card -->
         <div class="card">
             <h3>Borrow</h3>
             <p>Borrow equipment request form.</p>
-            <a href="borrowing/index.php">Open</a>
+            <a href="<?php echo BASE_URL; ?>/modules/borrowing/index.php">Open</a>
         </div>
 
         <!-- Learn More Card -->

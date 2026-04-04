@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // ✅ Trigger welcome popup (one time only)
             $_SESSION['show_welcome'] = true;
 
-            header("Location: ../modules/homepage.php");
+            header("Location: ../modules/homepage/homepage.php");
             exit;
 
         } else {

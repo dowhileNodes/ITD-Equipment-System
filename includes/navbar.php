@@ -166,9 +166,9 @@ body {
             <!--C:\xampp\htdocs\ITD-Equipment-System\includes\toplis.png-->
 
             <?php if(basename($_SERVER['PHP_SELF']) != 'homepage.php'): ?>
-    <a href="/ITD-Equipment-System/modules/homepage.php">
-        🏠 Home
-    </a>
+                <a href="/ITD-Equipment-System/modules/homepage/homepage.php">
+                    🏠 Home 
+                </a>
 <?php endif; ?>
         </div>
 
