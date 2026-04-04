@@ -6,13 +6,14 @@ require_once __DIR__ . '/../../config/db.php';
 $message = "";
 $showPopup = false;
 
-/*session checker
-if (!isset($_SESSION['employee_id'])) {
-    header("Location: ../Login/login.php");
-    exit;
-}*/
+/* Session checker */
+// Uncomment if needed
+// if (!isset($_SESSION['employee_id'])) {
+//     header("Location: ../Login/login.php");
+//     exit;
+// }
 
-//getting employee name
+// Getting employee name
 $employee_name = $_SESSION['employee_id'];
 
 $stmt = $conn->prepare("SELECT name FROM employees WHERE employee_id=?");
@@ -25,66 +26,68 @@ if ($employee && isset($employee['name'])) {
     $employee_name = $employee['name'];
 }
 
-//form submission
+// Form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $showPopup = true;
 
+    // Check if the file is uploaded without errors
     if (!isset($_FILES['signed_file']) || $_FILES['signed_file']['error'] !== 0) {
-        $message = "Upload failed";
+        $message = "Upload failed. Please try again.";
     } else {
 
         $form_id = intval($_POST['form_id']);
 
-        // Check if form exists
+        // Check if form exists in database
         $check = $conn->prepare("SELECT id FROM equipment_forms WHERE id = ?");
         $check->bind_param("i", $form_id);
         $check->execute();
         $result = $check->get_result();
 
         if ($result->num_rows == 0) {
-            $message = "Upload failed";
+            $message = "Form ID not found in the system.";
         } else {
 
+            // Allowed file extensions
             $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
 
+            // Get file extension and validate
             $uploadedFileName = basename($_FILES['signed_file']['name']);
             $extension = strtolower(pathinfo($uploadedFileName, PATHINFO_EXTENSION));
 
             if (!in_array($extension, $allowedExtensions)) {
-                $message = "Upload failed";
+                $message = "Invalid file type. Only PDF, JPG, JPEG, and PNG are allowed.";
             } else {
 
-                // Expected file name
+                // Expected file name format
                 $expectedName = "Equipment_Form_" . $form_id . "." . $extension;
 
                 if ($uploadedFileName !== $expectedName) {
-                    $message = "Uploaded filename is incorrect";
+                    $message = "Uploaded filename is incorrect. Expected: " . $expectedName;
                 } else {
 
-                    // Absolute upload directory (SAFE)
-                    $uploadDir = __DIR__ . "/uploads/gatepass/";
+                    // path outside the project folder, dito masesave yung uploaded gatepass form
+                    $uploadDir = "C:/ITD Inhouse folders/gatepass forms/";
 
+                    // Create directory if it doesn't exist (in case it's not created already)
                     if (!is_dir($uploadDir)) {
                         mkdir($uploadDir, 0755, true);
                     }
 
-                    $filePath = $uploadDir . $expectedName;
-                    $dbPath = "uploads/gatepass/" . $expectedName; // Path saved in DB
-
+                    $filePath = $uploadDir . $expectedName; // Absolute path on the system
+                    $dbPath = "ITD Inhouse folders/gatepass forms/" . $expectedName; // Path na nagsesave sa db under signed_file_path column
+                    //C:\ITD Inhouse folders\gatepass forms (uploads/gatepass)
+                    // Move uploaded file to the new location
                     if (move_uploaded_file($_FILES['signed_file']['tmp_name'], $filePath)) {
 
-                        $stmt = $conn->prepare("
-                            UPDATE equipment_forms
-                            SET signed_file_path = ?
-                            WHERE id = ?
-                        ");
+                        // Update database with the file path
+                        $stmt = $conn->prepare("UPDATE equipment_forms SET signed_file_path = ? WHERE id = ?");
                         $stmt->bind_param("si", $dbPath, $form_id);
                         $stmt->execute();
 
                         $message = "success";
                     } else {
-                        $message = "Upload failed";
+                        $message = "Upload failed. There was an error uploading the file.";
                     }
                 }
             }
@@ -93,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -165,14 +169,6 @@ button:hover { background:#333; }
 
 <body>
 
-<!--<div class="navbar">
-    <span>Toplis Solutions Incorporation - Dashboard</span>
-    <span>
-        hi, <?php echo htmlspecialchars($employee_name); ?> |
-        <a class="logout-btn" href="../Login/logout.php">Logout</a>
-    </span>
-</div>-->
-
 <div class="container">
     <h2>Upload Signed Gatepass</h2>
 
@@ -187,10 +183,11 @@ button:hover { background:#333; }
     </form>
 </div>
 
-<?php if($showPopup && $message == "success") { ?>
-<div class="popup success">Signed gatepass uploaded successfully</div>
-<?php } elseif($showPopup) { ?>
-<div class="popup failed"><?php echo $message; ?></div>
+<!-- Popup Message -->
+<?php if($showPopup) { ?>
+    <div class="popup <?php echo $message == "success" ? 'success' : 'failed'; ?>">
+        <?php echo $message == "success" ? "Signed gatepass uploaded successfully" : $message; ?>
+    </div>
 <?php } ?>
 
 </body>

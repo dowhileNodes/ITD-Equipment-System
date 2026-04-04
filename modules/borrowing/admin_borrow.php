@@ -1,12 +1,12 @@
 <?php
 // admin_borrow.php
+require_once __DIR__ . '/../../config/app.php';
+require_once __DIR__ . '/../../config/authentication.php';
 require_once __DIR__ . '/../../config/db.php';
-//session checker
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
+require_once __DIR__ . '/../../includes/navbar.php';
+requireLogin();
+requireAdmin(); // only admins can access this page
+
 // fetching all records from form
 $sql = "SELECT * FROM it_equipment_logs ORDER BY created_at DESC";
 $result = $conn->query($sql);

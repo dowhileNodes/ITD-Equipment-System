@@ -1,11 +1,17 @@
 <?php
 ob_start();
-//session checker
-session_start();
-if (!isset($_SESSION['employee_id'])) {
-    header("Location: login.php");
-    exit();
+
+// LOGO
+$logoPath = 'C:\\xampp\\htdocs\\ITD-Equipment-System\\modules\\gatepass\\toplis.jpg';
+
+if (file_exists($logoPath)) {
+    $logoData = base64_encode(file_get_contents($logoPath));
+    $logoSrc = 'data:image/jpeg;base64,' . $logoData;
+} else {
+    $logoSrc = '';
 }
+
+$formID = isset($form['id']) ? htmlspecialchars($form['id']) : 'N/A';
 ?>
 
 <style>
@@ -16,51 +22,85 @@ if (!isset($_SESSION['employee_id'])) {
 
     .container {
         width: 100%;
-        border: 2px solid #000;
         padding: 15px;
     }
 
+    /* HEADER */
     .header {
-        width: 100%;
-        margin-bottom: 10px;
+        position: relative;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
     }
 
     .logo {
-        width: 100px;
         float: left;
     }
 
     .logo img {
-        width: 100px;
+        width: 120px;
     }
 
     .title {
         text-align: center;
+        position: relative;
+        left: -20px; /* adjust value */
     }
 
     .title h2 {
         margin: 0;
-        font-size: 18px;
+        font-size: 16px;
+        font-weight: bold;
     }
 
     .title h3 {
-        margin: 0;
-        font-size: 16px;
+        margin: 2px 0 0 0;
+        font-size: 14px;
         letter-spacing: 2px;
+    }
+
+    /* form ID*/
+    .form-id {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-weight: bold;
+        font-size: 13px;
     }
 
     .clear {
         clear: both;
     }
 
-    .row {
+    /* details section */
+    .info-section {
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 13px;
+    }
+
+    .info-left,
+    .info-right {
+        width: 48%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .info-right {
+        float: right;
+    }
+
+    .info-row {
         margin-bottom: 8px;
     }
 
     .field-label {
+        display: inline-block;
+        width: 130px;
         font-weight: bold;
     }
 
+    /* table */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -72,10 +112,11 @@ if (!isset($_SESSION['employee_id'])) {
     }
 
     th, td {
-        padding: 5px;
+        padding: 6px;
         font-size: 12px;
     }
 
+    /* signatures section */
     .sign-section {
         margin-top: 25px;
         width: 100%;
@@ -87,7 +128,6 @@ if (!isset($_SESSION['employee_id'])) {
     }
 
     .sign-field {
-        border: 1px solid #000;
         padding: 10px;
         margin-bottom: 10px;
     }
@@ -95,39 +135,56 @@ if (!isset($_SESSION['employee_id'])) {
 
 <div class="container">
 
+    <!-- HEADER -->
     <div class="header">
+
         <div class="logo">
-            <img src="<?= __DIR__ ?>/../../TSI (png) 2022 500 pixel.png">
+            <img src="<?= $logoSrc ?>" alt="Toplis Logo">
         </div>
 
         <div class="title">
-            <h2>TSI GROUP</h2>
+            <h2>Toplis Solutions Incorporation</h2>
             <h3>GATE PASS</h3>
+        </div>
+
+        <div class="form-id">
+            Form ID: <?= $formID ?>
         </div>
 
         <div class="clear"></div>
     </div>
 
-    <div class="row">
-        <span class="field-label">TO:</span>
-        <?= htmlspecialchars($form['recipient']) ?>
+    <!-- INFO -->
+    <div class="info-section">
+
+        <div class="info-left">
+            <div class="info-row">
+                <span class="field-label">TO:</span>
+                <?= htmlspecialchars($form['recipient'] ?? '-') ?>
+            </div>
+
+            <div class="info-row">
+                <span class="field-label">FROM:</span>
+                <?= htmlspecialchars($form['issued_from'] ?? '-') ?>
+            </div>
+        </div>
+
+        <div class="info-right">
+            <div class="info-row">
+                <span class="field-label">DATE:</span>
+                <?= htmlspecialchars($form['issue_date'] ?? '-') ?>
+            </div>
+
+            <div class="info-row">
+                <span class="field-label">Business Unit:</span>
+                <?= htmlspecialchars($form['business_unit'] ?? '-') ?>
+            </div>
+        </div>
+
+        <div style="clear:both;"></div>
     </div>
 
-    <div class="row">
-        <span class="field-label">FROM:</span>
-        <?= htmlspecialchars($form['issued_from']) ?>
-    </div>
-
-    <div class="row">
-        <span class="field-label">DATE:</span>
-        <?= htmlspecialchars($form['issue_date']) ?>
-    </div>
-
-    <div class="row">
-        <span class="field-label">Business Unit:</span>
-        <?= htmlspecialchars($form['business_unit']) ?>
-    </div>
-
+    <!-- ITEMS -->
     <table>
         <thead>
             <tr>
@@ -138,13 +195,14 @@ if (!isset($_SESSION['employee_id'])) {
         <tbody>
         <?php foreach ($items as $item): ?>
             <tr>
-                <td><?= htmlspecialchars($item['qty']) ?></td>
-                <td><?= htmlspecialchars($item['description_items[]']) ?></td>
+                <td><?= htmlspecialchars($item['quantity']) ?></td>
+                <td><?= htmlspecialchars($item['description']) ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
 
+    <!-- SIGNATURES -->
     <div class="sign-section">
 
         <div class="sign-box">
@@ -171,7 +229,7 @@ if (!isset($_SESSION['employee_id'])) {
             </div>
         </div>
 
-        <div style="clear:both;"></div>
+        <div class="clear"></div>
     </div>
 
 </div>
