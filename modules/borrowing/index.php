@@ -308,13 +308,12 @@ oninput="this.value = this.value.replace(/[^A-Za-zñÑ\s.,\-']/g, '')">
 <div class="form-actions">
 <button type="submit">Submit</button>
 <button type="button" id="clearFormBtn">Clear</button>
-</div>
 <?php if ($_SESSION['role'] === 'admin'): ?>
-<div class="form-actions" style="margin-top: 10px;">
-    <a href="/ITD-Equipment-System/modules/borrowing/admin_borrow.php" 
-       style="color: #fd9002; text-decoration: underline;">Admin Borrow List</a>
+    <button type="button" onclick="window.location.href='/ITD-Equipment-System/modules/borrowing/admin_borrow.php'">
+        Admin Borrow List
+    </button>
+    <?php endif; ?>
 </div>
-<?php endif; ?>
 </form>
 </div>
 

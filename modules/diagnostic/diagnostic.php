@@ -24,7 +24,6 @@ body {
     margin: 0;
 }
 
-/* 🔥 FULL PAGE BLUR */
 body.modal-open {
     overflow: hidden;
 }
@@ -307,7 +306,7 @@ oninput="this.value = this.value.replace(/[^A-Za-zñÑ\s.,\-']/g, '')">
     </td>
 
     <td>
-        <input type="text" name="noted_by" required placeholder="Juan dela Cruz
+        <input type="text" name="noted_by" required placeholder="Juan dela Cruz"
         pattern="[A-Za-zñÑ\s.,\-']+"
         oninput="this.value = this.value.replace(/[^A-Za-zñÑ\s.,\-']/g, '')">
     </td>

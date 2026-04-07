@@ -248,7 +248,7 @@ h2 {
         <div class="card">
             <h3>Service Report</h3>
             <p>Service Report</p>
-            <a href="<?php echo BASE_URL; ?>/modules/admin/manager_users.php">Open</a>
+            <a href="<?php echo BASE_URL; ?>/modules/admin/service_report.php">Open</a>
         </div>
 
     </div>

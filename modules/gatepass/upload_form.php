@@ -136,7 +136,7 @@ button {
     font-weight:bold;
 }
 
-button:hover { background:#333; }
+button:hover { background:#fd9002; }
 
 .popup {
     position: fixed;

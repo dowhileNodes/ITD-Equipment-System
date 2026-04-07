@@ -16,14 +16,25 @@ requireLogin();
 <meta charset="UTF-8">
 <title>TSI Group - Gate Pass</title>
 <style>
-body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; padding-top: 95px;}
+body { 
+    font-family: Arial, sans-serif; 
+    background: #f4f4f4; 
+     background:url('viber_image_2026-02-24_11-08-29-685.jpg');
+     background-size:cover;
+    background-position:center;
+    padding: 20px; 
+    padding-top: 95px;
+}
+
 .container {  
     width: 800px;
     max-width: 95%;
     margin: 120px auto 40px auto; 
     background: #fff;
     padding: 20px;
-    border: 2px solid #000; }
+    border: 2px solid #000; 
+}
+
 .header { display: flex; align-items: center; margin-bottom: 10px; }
 .logo { width: 100px; }
 .logo img { width: 100%; height: auto; }
@@ -42,7 +53,28 @@ th, td { padding: 5px; font-size: 12px; }
 .sign-box { width: 48%; }
 .sign-field { border: 1px solid #000; padding: 8px; margin-bottom: 10px; font-size: 12px; }
 .buttons { margin-top: 15px; text-align: center; }
-button { padding: 8px 15px; margin: 5px; cursor: pointer; }
+button {
+        padding: 8px 15px;
+        margin: 5px; 
+        cursor: pointer; 
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+
+.buttons button,
+.btn {
+    background: #324a63;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+}
+
 </style>
 </head>
 <!-- Add and remove button Script -->
@@ -150,11 +182,11 @@ function removeRow(btn) {
 
     <div class="buttons">
         <button type="submit">Save Form</button>
-       <!-- <button type="button" onclick="window.print()">Print</button>-->
-    </div>
-   <div class="buttons">
+            <a href="upload_form.php" class="btn">
+                Upload Form
+            </a>
 <?php if ($_SESSION['role'] === 'admin'): ?>
-    <a href="/ITD-Equipment-System/modules/gatepass/gatepass_list.php">
+    <a href="/ITD-Equipment-System/modules/gatepass/gatepass_list.php" class="btn">
         Gatepass List
     </a>
 <?php endif; ?>

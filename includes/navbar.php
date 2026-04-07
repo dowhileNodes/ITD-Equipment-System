@@ -25,10 +25,7 @@ html, body {
     justify-content: center;
     align-items: center;
 
-   background: #212529; /*darker color bg */
-
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+   background: #696969; /*darker color bg */
 
     /*border: 3px solid darkgray;*/
 
@@ -115,17 +112,12 @@ html, body {
 
 /* TIME GLASS BOX */
 .time-box{
-    background: rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.2);
-    backdrop-filter: blur(12px);
 
     padding:6px 12px;
     border-radius:10px;
 
     text-align:right;
     color:white;
-
-    box-shadow:0 5px 15px rgba(0,0,0,0.3);
 }
 
 /* GREETING */

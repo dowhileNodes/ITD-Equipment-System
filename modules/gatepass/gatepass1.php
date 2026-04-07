@@ -342,6 +342,12 @@ oninput="this.value = this.value.replace(/[^A-Za-zñÑ\s.,\-']/g, '')">
 <div class="submit-box">
 <button type="submit">Save Form</button>
 <button type="button" id="clearFormBtn" class="clear-btn">Clear Form</button>
+<button type="button" onclick="window.location.href='upload_form.php'"> Upload Form </button>
+<?php if ($_SESSION['role'] === 'admin'): ?>
+    <button type="button" onclick="window.location.href='/ITD-Equipment-System/modules/gatepass/gatepass_list.php'">
+        Gatepass List
+    </button>
+    <?php endif; ?>
 </div>
 
 </form>
